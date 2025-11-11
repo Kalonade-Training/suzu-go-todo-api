@@ -8,6 +8,10 @@ type UserID struct {
 	value string
 }
 
+func (u UserID) String() string {
+	panic("unimplemented")
+}
+
 func NewUserID() UserID {
 	id := uuid.New().String()
 	return UserID{value: id}
