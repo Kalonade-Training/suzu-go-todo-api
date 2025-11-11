@@ -7,6 +7,7 @@
 package di
 
 import (
+	"todo-app-go/application/todo"
 	"todo-app-go/application/user"
 	"todo-app-go/infrastructure/authclient"
 	"todo-app-go/infrastructure/database"
@@ -28,4 +29,20 @@ func InitializedUserController() (*handler.UserHandler, error) {
 	loginUsecase := user.NewLoginUsecase(iUserRepository, iAuthClient)
 	userHandler := handler.NewUserHandler(registerUsecase, loginUsecase)
 	return userHandler, nil
+}
+
+func InitializedTodoController() (*handler.TodoHandler, error) {
+	db, err := database.NewGormDB()
+	if err != nil {
+		return nil, err
+	}
+	iTodoRepository := repository.NewTodoRepositoryProvider(db)
+	createTodoUsecase := todo.NewCreateTodoUsecase(iTodoRepository)
+	getTodoUsecase := todo.NewGetTodoUsecase(iTodoRepository)
+	getDetailTodoUsecase := todo.NewGetDetailTodoUsecase(iTodoRepository)
+	updateTodoUsecase := todo.NewUpdateTodoUsecase(iTodoRepository)
+	deleteTodoUsecase := todo.NewDeleteTodoUsecase(iTodoRepository)
+	duplicateTodoUsecase := todo.NewDuplicateTodoUsecase(iTodoRepository)
+	todoHandler := handler.NewTodoHandler(createTodoUsecase, getTodoUsecase, getDetailTodoUsecase, updateTodoUsecase, deleteTodoUsecase, duplicateTodoUsecase)
+	return todoHandler, nil
 }

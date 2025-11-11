@@ -1,6 +1,7 @@
 package di
 
 import (
+	"todo-app-go/application/todo"
 	"todo-app-go/application/user"
 	"todo-app-go/infrastructure/authclient"
 	"todo-app-go/infrastructure/database"
@@ -11,7 +12,7 @@ import (
 )
 
 // UserControllerの依存関係組み立て
-func InitializedUserController() (*handler.UserHandler, error) {
+func InitializeUserController() (*handler.UserHandler, error) {
 	wire.Build(
 		database.NewGormDB,
 		repository.NewUserRepositoryProvider,
@@ -21,4 +22,20 @@ func InitializedUserController() (*handler.UserHandler, error) {
 		authclient.NewAuthClient,
 	)
 	return &handler.UserHandler{}, nil
+}
+
+// TodoControllerの依存関係組み立て
+func InitializeTodoController() (*handler.TodoHandler, error) {
+	wire.Build(
+		database.NewGormDB,
+		repository.NewTodoRepositoryProvider,
+		handler.NewTodoHandler,
+		todo.NewCreateTodoUsecase,
+		todo.NewGetTodoUsecase,
+		todo.NewGetDetailTodoUsecase,
+		todo.NewUpdateTodoUsecase,
+		todo.NewDeleteTodoUsecase,
+		todo.NewDuplicateTodoUsecase,
+	)
+	return &handler.TodoHandler{}, nil
 }
