@@ -1,3 +1,4 @@
+```text
 go-todo-api
 │  go.mod
 │  go.sum
@@ -68,3 +69,4 @@ go-todo-api
     │
     └─middleware
             auth_middleware.go
+```
